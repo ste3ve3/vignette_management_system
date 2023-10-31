@@ -1,4 +1,3 @@
-import { lazy } from 'react';
 import Index from '../pages/Index';
 import Analytics from '../pages/Analytics';
 import Finance from '../pages/Finance';
@@ -73,7 +72,8 @@ import ERROR404 from '../pages/Pages/Error404';
 import ERROR500 from '../pages/Pages/Error500';
 import ERROR503 from '../pages/Pages/Error503';
 import Maintenence from '../pages/Pages/Maintenence';
-import LoginBoxed from '../pages/Authentication/LoginBoxed';
+import Login from '../pages/Authentication/Login';
+import RecoverPasscode from '../pages/Authentication/RecoverPasscode';
 import RegisterBoxed from '../pages/Authentication/RegisterBoxed';
 import UnlockBoxed from '../pages/Authentication/UnlockBox';
 import RecoverIdBoxed from '../pages/Authentication/RecoverIdBox';
@@ -99,6 +99,7 @@ import QuillEditor from '../pages/Forms/QuillEditor';
 import MarkDownEditor from '../pages/Forms/MarkDownEditor';
 import DateRangePicker from '../pages/Forms/DateRangePicker';
 import Clipboard from '../pages/Forms/Clipboard';
+import AuthGuard from './AuthGuard';
 
 const routes = [
     // dashboard
@@ -432,8 +433,13 @@ const routes = [
     },
     //Authentication
     {
-        path: '/auth/boxed-signin',
-        element: <LoginBoxed />,
+        path: '/login',
+        element: <Login />,
+        layout: 'blank',
+    },
+    {
+        path: '/recover-passcode',
+        element: <RecoverPasscode />,
         layout: 'blank',
     },
     {
@@ -544,4 +550,15 @@ const routes = [
     },
 ];
 
-export { routes };
+const protectedRoutes = routes.map(route => {
+    if (!route.layout) {
+      return {
+        ...route,
+        element: <AuthGuard>{route.element}</AuthGuard>,
+      };
+    } else {
+      return route;
+    }
+  });
+
+export { protectedRoutes }; 

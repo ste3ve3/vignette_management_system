@@ -7,9 +7,10 @@ interface ModalDialogProps {
     setModalVisibility: React.Dispatch<React.SetStateAction<boolean>>;
     title: string;
     body: React.ReactNode;
+    hideSubmitButtons?: boolean;
 }
 
-const ModalDialog = ({ modalVisibility, setModalVisibility, title, body }: ModalDialogProps) => {
+const ModalDialog = ({ modalVisibility, setModalVisibility, title, body, hideSubmitButtons }: ModalDialogProps) => {
   return (
     <Transition appear show={modalVisibility} as={Fragment}>
         <Dialog as="div" open={modalVisibility} onClose={() => setModalVisibility(false)} className="relative z-[51]">
@@ -50,15 +51,17 @@ const ModalDialog = ({ modalVisibility, setModalVisibility, title, body }: Modal
                             <div className="p-5">
                                 <form>
                                     {body}
-
-                                    <div className="ltr:text-right rtl:text-left flex justify-end items-center mt-8">
-                                        <button type="button" className="btn btn-outline-danger" onClick={() => setModalVisibility(false)}>
-                                            Cancel
-                                        </button>
-                                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                            Save
-                                        </button>
-                                    </div>
+                                    {
+                                        !hideSubmitButtons && 
+                                        <div className="ltr:text-right rtl:text-left flex justify-end items-center mt-8">
+                                            <button type="button" className="btn btn-outline-danger" onClick={() => setModalVisibility(false)}>
+                                                Cancel
+                                            </button>
+                                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                                                Save
+                                            </button>
+                                        </div>
+                                    }
                                 </form>
                             </div>
                         </Dialog.Panel>
